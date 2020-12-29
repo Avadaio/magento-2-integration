@@ -1,4 +1,5 @@
-<?xml version="1.0"?><!--
+<?xml version="1.0"?>
+<!--
 /**
  * Mageplaza
  *
@@ -14,159 +15,508 @@
  * version in the future.
  *
  * @category    Mageplaza
- * @package     Mageplaza_Smtp
+ * @package     Mageplaza_SocialLogin
  * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
  * @license     https://www.mageplaza.com/LICENSE.txt
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <section id="smtp" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>SMTP</label>
+        <section id="sociallogin" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Social Login</label>
             <tab>mageplaza</tab>
-            <resource>Mageplaza_Smtp::configuration</resource>
-            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>General Configuration</label>
-                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Mageplaza SMTP</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment><![CDATA[Mageplaza SMTP is compatible with default Magento SMTP and other email modules.<br />
-                        It helps to reduce abandonment cart with <a href="https://www.mageplaza.com/magento-2-one-step-checkout-extension/" target="_blank">One Step Checkout</a>. Fully compatible with <a href="https://www.mageplaza.com/magento-2-abandoned-cart-email/" target="_blank">Abandoned Cart Email</a>]]>
-                    </comment>
-                </field>
-                <field id="log_email" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Log Emails</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>It will log all sent emails, you can preview it and schedule clean up.</comment>
-                </field>
-                <field id="clean_email" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Clean Email Log Every</label>
-                    <validate>validate-number validate-zero-or-greater validate-digits</validate>
-                    <comment>Day(s). If empty or zero, the Email log will not be cleaned.</comment>
-                    <depends>
-                        <field id="log_email">1</field>
-                    </depends>
-                </field>
-                <field id="blacklist" translate="label comment" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Blacklist</label>
-                    <comment><![CDATA[Enter the main email pattern format. Separated by line breaks.<br />
-                        For the email having the same pattern format with this main pattern, it can not receive email from the system.<br />
-                        For example: Enter the pattern: /^[0-9][a-z0-9\$\%\&]+@[a-z]+\.[a-z]{2,}$/ means that email format must start with number, the following characters can be normal text, number or special character ($, %, &). The domain after @ with normal-text characters will not receive email from system. For instance: 1abc@example.com</br>
-                        For more details of writing email pattern, please see it <a href=" https://docs.mageplaza.com/smtp-m2/index.html" target="_blank">here</a>.]]>
-                    </comment>
-                </field>
-            </group>
-            <group id="configuration_option" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>SMTP Configuration Options</label>
-                <field id="host" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Host</label>
-                    <comment>Support Host name and IP Address</comment>
-                    <frontend_model>Mageplaza\Smtp\Block\Adminhtml\System\Config\Host</frontend_model>
-                </field>
-                <field id="port" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Port</label>
-                    <comment>Default ports: 25, 465, or 587. Port 465 (SSL required), Port 587 (TLS required)</comment>
-                </field>
-                <field id="protocol" translate="label comment" type="select" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Protocol</label>
-                    <source_model>Mageplaza\Smtp\Model\Config\Source\Protocol</source_model>
-                    <comment>We recommend use security connections: SSL or TLS. Secure Socket Layer (SSL), Transport Layer Security (TLS) protocols.</comment>
-                </field>
-                <field id="authentication" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Authentication</label>
-                    <source_model>Mageplaza\Smtp\Model\Config\Source\Authentication</source_model>
-                </field>
-                <field id="username" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Username</label>
-                </field>
-                <field id="password" translate="label" type="obscure" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Password</label>
-                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-                </field>
-                <field id="return_path_email" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Return-Path Email</label>
-                    <comment>Leave empty to ignore it.</comment>
-                    <validate>validate-email</validate>
-                </field>
-                <group id="test_email" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Send Test Email</label>
-                    <field id="from" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Send From</label>
-                        <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
-                    </field>
-                    <field id="to" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Send To</label>
-                        <comment><![CDATA[<p class="note"><span>Enter your email and click <b>Test Now</b> button to test the configuration. <br>
-                            Read: <br>
-                            - <a href="https://www.mageplaza.com/faqs/smtp/" target="_blank">FAQs</a><br>
-                            - <a href="https://www.mageplaza.com/faqs/smtp-connection-timed-out.html" target="_blank">Connection timed out</a>
-                        </span>
-                        </p>]]>
-                        </comment>
-                    </field>
-                    <field id="sent" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label></label>
-                        <button_label>Test Now</button_label>
-                        <button_url>adminhtml/smtp/test</button_url>
-                        <frontend_model>Mageplaza\Smtp\Block\Adminhtml\System\Config\Button</frontend_model>
-                    </field>
-                </group>
-            </group>
-            <group id="developer" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Developer</label>
-                <field id="developer_mode" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Developer Mode</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>If Enable, Magento will not delivery any email to receiver. This is useful for developers.</comment>
-                </field>
-            </group>
-        </section>
-        <section id="email_marketing" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Marketing Automation</label>
-            <tab>mageplaza</tab>
-            <resource>Mageplaza_Smtp::email_marketing</resource>
-            <group id="general" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>General Configuration</label>
-                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <resource>Mageplaza_SocialLogin::configuration</resource>
+            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment><![CDATA[By enabling Marketing Automation, you agree to the <a href="https://avada.io/tos.html" target="_blank">Terms & Conditions</a> and <a href="https://avada.io/dpa.html" target="_blank">Data processing agreement</a>.]]></comment>
+                    <comment><![CDATA[This extension is fully compatible with <a href="https://www.mageplaza.com/magento-2-one-step-checkout-extension/" target="_blank">One Step Checkout</a>. <br>
+                    1. Increase 25% conversion rate with <a href="https://www.mageplaza.com/magento-2-layered-navigation-extension/" target="_blank">Layered Navigation</a>
+                    2. <a href="https://pages.mageplaza.com/abandoned-cart-email-templates-for-magento/?utm_source=configuration&utm_campaign=m2-bannerslider" target="_blank">How to setup abandoned cart email series</a>]]></comment>
                 </field>
-                <field id="app_id" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>App ID</label>
-                    <comment><![CDATA[Create API key <a href="https://app.avada.io/manage/keys" target="_blank">here</a>.]]></comment>
+                <field id="send_password" translate="label comment" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Send Password To Customer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[Install <a href="https://www.mageplaza.com/magento-2-smtp/?utm_source=mageplaza&utm_medium=mageplaza&utm_campaign=social-login&utm_content=SMTP" target="_blank">Mageplaza SMTP</a> to avoid sending emails to spam box.]]>
+                    </comment>
+                </field>
+                <field id="check_mode" translate="label comment" type="select" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Require Enter Password</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Require enter password confirmation when logging in with social for the first time on existing account.</comment>
+                </field>
+                <field id="social_display" translate="label comment" type="multiselect" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show Social Login Buttons on</label>
+                    <source_model>Mageplaza\SocialLogin\Model\System\Config\Source\Position</source_model>
+                </field>
+                <field id="popup_login" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Use Popup Login</label>
+                    <source_model>Mageplaza\SocialLogin\Model\System\Config\Source\Popup</source_model>
+                </field>
+                <field id="authentication_popup" translate="label comment" type="select" sortOrder="17" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Use Popup Login As Authentication Popup</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Social Login popup will be used to replace Magento Default Login popup if "Allow Guest Checkout" is No.</comment>
                     <depends>
-                        <field id="email_marketing/general/enabled">1</field>
+                        <field id="popup_login" separator=",">quick_login,popup_login,popup_slide</field>
                     </depends>
                 </field>
-                <field id="secret_key" translate="label comment" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Secret key</label>
-                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                <field id="link_trigger" translate="label" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Popup Links Selector</label>
+                    <comment>Comma-separated.</comment>
+                    <!--Compatible: Etheme_YourStore[ .dropdown-menu.dropdown-menu&#45;&#45;xs-full ]-->
                     <depends>
-                        <field id="email_marketing/general/enabled">1</field>
+                        <field id="popup_login" separator=",">popup_login,quick_login,popup_slide</field>
                     </depends>
                 </field>
-                <field id="test_connection" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label></label>
-                    <button_label>Test connection</button_label>
-                    <button_url>adminhtml/smtp/testconnection</button_url>
-                    <frontend_model>Mageplaza\Smtp\Block\Adminhtml\System\Config\TestConnection</frontend_model>
+                <field id="require_more_info" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Require More Info.</label>
+                    <source_model>Mageplaza\SocialLogin\Model\System\Config\Source\RequestInfo</source_model>
+                    <comment>Request the customer to enter information when creating an account.</comment>
                     <depends>
-                        <field id="email_marketing/general/enabled">1</field>
+                        <field id="popup_login" separator=",">quick_login,popup_login,popup_slide</field>
                     </depends>
                 </field>
-                <group id="synchronization" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Synchronization</label>
-                    <field id="sync_customer" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label></label>
-                        <button_label>Synchronize Customers</button_label>
-                        <button_url>adminhtml/smtp_sync/customer</button_url>
-                        <frontend_model>Mageplaza\Smtp\Block\Adminhtml\System\Config\SyncCustomer</frontend_model>
-                    </field>
+                <field id="information_require" translate="label comment" type="multiselect" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Information Required</label>
+                    <source_model>Mageplaza\SocialLogin\Model\System\Config\Source\Information</source_model>
                     <depends>
-                        <field id="email_marketing/general/enabled">1</field>
+                        <field id="require_more_info" separator=",">1,2</field>
                     </depends>
-                </group>
+                    <validate>required</validate>
+                </field>
+                <field id="popup_effect" translate="label" type="select" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Popup Effect</label>
+                    <source_model>Mageplaza\SocialLogin\Model\System\Config\Source\Effect</source_model>
+                    <depends>
+                        <field id="popup_login" separator=",">popup_login</field>
+                    </depends>
+                </field>
+                <field id="style_management" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Style Management</label>
+                    <source_model>Mageplaza\SocialLogin\Model\System\Config\Source\Color</source_model>
+                    <depends>
+                        <field id="popup_login" separator=",">popup_login,quick_login,popup_slide</field>
+                    </depends>
+                </field>
+                <field id="custom_color" translate="label" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Custom Color</label>
+                    <validate>jscolor {hash:true,refine:false}</validate>
+                    <depends>
+                        <field id="popup_login" separator=",">popup_login,quick_login,popup_slide</field>
+                        <field id="style_management">custom</field>
+                    </depends>
+                </field>
+                <field id="custom_css" translate="label" type="textarea" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Custom CSS</label>
+                    <comment><![CDATA[
+                        If you use <b> Quick Login </b> or <b> Popup Slide </b>, you should fill this field with those class: <br>
+                        #bnt-social-login-fake-email { <br>
+                          background-color: <b> Your Color in Style Management field </b> !important; <br>
+                          border: <b> Your Color in Style Management field </b> !important; <br>
+                        } <br>
+
+                        #request-popup .social-login-title { <br>
+                          background-color: <b> Your Color in Style Management field </b> !important; <br>
+                        } <br>
+                    ]]></comment>
+                </field>
+            </group>
+            <group id="facebook" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Facebook</label>
+                <field id="is_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Create app <a href="https://developers.facebook.com/apps" target="_bank">here</a>]]></comment>
+                </field>
+                <field id="app_id" translate="label" type="password" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Facebook App ID</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="app_secret" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Facebook App Secret</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="redirect_url" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Mageplaza\SocialLogin\Block\System\RedirectUrl</frontend_model>
+                    <label>Valid OAuth redirect URIs</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                    <validate>validate-number</validate>
+                </field>
+            </group>
+            <group id="google" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Google</label>
+                <field id="is_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Create app <a href="https://code.google.com/apis/console/" target="_bank">here</a>]]></comment>
+                </field>
+                <field id="app_id" translate="label" type="password" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client ID</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="app_secret" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client Secret</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="redirect_url" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Mageplaza\SocialLogin\Block\System\RedirectUrl</frontend_model>
+                    <label>REDIRECT URIS</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                    <validate>validate-number</validate>
+                </field>
+            </group>
+            <group id="amazon" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Amazon</label>
+                <field id="is_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Create app <a href="https://sellercentral.amazon.com/gp/homepage.html" target="_bank">here</a>]]></comment>
+                </field>
+                <field id="app_id" translate="label" type="password" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client ID</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="app_secret" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client Secret</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="redirect_url" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Mageplaza\SocialLogin\Block\System\RedirectUrl</frontend_model>
+                    <label>REDIRECT URIS</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                    <validate>validate-number</validate>
+                </field>
+            </group>
+            <group id="twitter" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Twitter</label>
+                <field id="is_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Create app <a href="https://dev.twitter.com/apps" target="_bank">here</a>]]></comment>
+                </field>
+                <field id="app_id" translate="label" type="password" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Consumer Key</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="app_secret" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Consumer Secret</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="redirect_url" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Mageplaza\SocialLogin\Block\System\RedirectUrl</frontend_model>
+                    <label>Callback URL</label>
+                    <comment><![CDATA[ If you create app from developer.twitter.com, then remove "?hauth.done=Twitter"<br>
+                                Ex: http://yourdomain.com/sociallogin/social/callback/<br>
+                             ]]></comment>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="linkedin" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>LinkedIn</label>
+                <field id="is_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Create app <a href="https://www.linkedin.com/secure/developer" target="_bank">here</a>]]></comment>
+                </field>
+                <field id="app_id" translate="label" type="password" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>ID Client</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="app_secret" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secret Client</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="redirect_url" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Mageplaza\SocialLogin\Block\System\RedirectUrl</frontend_model>
+                    <label>Redirect URL</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                    <validate>validate-number</validate>
+                </field>
+            </group>
+            <group id="yahoo" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Yahoo</label>
+                <field id="is_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Create app <a href="https://developer.yahoo.com/apps/" target="_bank">here</a>]]></comment>
+                </field>
+                <field id="app_id" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client ID</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="app_secret" translate="label" type="password" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client Secret</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="redirect_url" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Mageplaza\SocialLogin\Block\System\RedirectUrl</frontend_model>
+                    <label>Redirect URI(s)</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                    <validate>validate-number</validate>
+                </field>
+            </group>
+            <group id="foursquare" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Foursquare</label>
+                <field id="is_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Create app <a href="https://www.foursquare.com/oauth/" target="_bank">here</a>]]></comment>
+                </field>
+                <field id="app_id" translate="label" type="password" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client ID</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="app_secret" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client Secret</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="redirect_url" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Mageplaza\SocialLogin\Block\System\RedirectUrl</frontend_model>
+                    <label>Callback URL</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                    <validate>validate-number</validate>
+                </field>
+            </group>
+            <group id="instagram" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Instagram</label>
+                <field id="is_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Create app <a href="http://instagram.com/developer/clients/manage/" target="_bank">here</a>]]></comment>
+                </field>
+                <field id="app_id" translate="label" type="password" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client ID</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="app_secret" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client Secret</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="redirect_url" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Mageplaza\SocialLogin\Block\System\RedirectUrl</frontend_model>
+                    <label>REDIRECT URIS</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                    <validate>validate-number</validate>
+                </field>
+            </group>
+            <group id="vkontakte" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Vkontakte</label>
+                <field id="is_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Create app <a href="https://new.vk.com/dev" target="_bank">here</a>]]></comment>
+                </field>
+                <field id="app_id" translate="label" type="password" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Application ID</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="app_secret" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secure Key</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                    <validate>validate-number</validate>
+                </field>
+            </group>
+            <group id="github" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Github</label>
+                <field id="is_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Create app <a href="https://github.com/settings/applications/new" target="_bank">here</a>]]></comment>
+                </field>
+                <field id="app_id" translate="label" type="password" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client ID</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="app_secret" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client Secret</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="redirect_url" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Mageplaza\SocialLogin\Block\System\RedirectUrl</frontend_model>
+                    <label>Callback URL</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                    <validate>validate-number</validate>
+                </field>
+            </group>
+            <group id="live" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Live</label>
+                <field id="is_enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Create app <a href="https://account.live.com/developers/applications/create" target="_bank">here</a>]]></comment>
+                </field>
+                <field id="app_id" translate="label" type="password" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client ID</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="app_secret" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client Secret</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="redirect_url" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Mageplaza\SocialLogin\Block\System\RedirectUrl</frontend_model>
+                    <label>Callback URL</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <depends>
+                        <field id="is_enabled">1</field>
+                    </depends>
+                    <validate>validate-number</validate>
+                </field>
             </group>
         </section>
     </system>
